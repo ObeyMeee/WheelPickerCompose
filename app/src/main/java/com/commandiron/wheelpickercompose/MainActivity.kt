@@ -56,6 +56,7 @@ class MainActivity : ComponentActivity() {
                             timeFormat = TimeFormat.AM_PM,
                             size = DpSize(200.dp, 100.dp),
                             rowCount = 5,
+                            minutesStep = 15,
                             textStyle = MaterialTheme.typography.titleSmall,
                             textColor = Color(0xFFffc300),
                             selectorProperties = WheelPickerDefaults.selectorProperties(

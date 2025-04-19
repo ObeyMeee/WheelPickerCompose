@@ -26,6 +26,7 @@ internal fun DefaultWheelDateTimePicker(
     timeFormat: TimeFormat = TimeFormat.HOUR_24,
     size: DpSize = DpSize(256.dp, 128.dp),
     rowCount: Int = 3,
+    minutesStep: Int = 1,
     textStyle: TextStyle = MaterialTheme.typography.titleMedium,
     textColor: Color = LocalContentColor.current,
     selectorProperties: SelectorProperties = WheelPickerDefaults.selectorProperties(),
@@ -104,6 +105,7 @@ internal fun DefaultWheelDateTimePicker(
                     height = size.height
                 ),
                 rowCount = rowCount,
+                minutesStep = minutesStep,
                 textStyle = textStyle,
                 textColor = textColor,
                 selectorProperties = WheelPickerDefaults.selectorProperties(

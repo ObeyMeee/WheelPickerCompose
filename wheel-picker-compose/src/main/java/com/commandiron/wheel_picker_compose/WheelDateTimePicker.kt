@@ -24,23 +24,25 @@ fun WheelDateTimePicker(
     timeFormat: TimeFormat = TimeFormat.HOUR_24,
     size: DpSize = DpSize(256.dp, 128.dp),
     rowCount: Int = 3,
+    minutesStep: Int = 1,
     textStyle: TextStyle = MaterialTheme.typography.titleMedium,
     textColor: Color = LocalContentColor.current,
     selectorProperties: SelectorProperties = WheelPickerDefaults.selectorProperties(),
-    onSnappedDateTime : (snappedDateTime: LocalDateTime) -> Unit = {}
+    onSnappedDateTime: (snappedDateTime: LocalDateTime) -> Unit = {}
 ) {
     DefaultWheelDateTimePicker(
-        modifier,
-        startDateTime,
-        minDateTime,
-        maxDateTime,
-        yearsRange,
-        timeFormat,
-        size,
-        rowCount,
-        textStyle,
-        textColor,
-        selectorProperties,
+        modifier = modifier,
+        startDateTime = startDateTime,
+        minDateTime = minDateTime,
+        maxDateTime = maxDateTime,
+        yearsRange = yearsRange,
+        timeFormat = timeFormat,
+        size = size,
+        rowCount = rowCount,
+        textStyle = textStyle,
+        textColor = textColor,
+        selectorProperties = selectorProperties,
+        minutesStep = minutesStep,
         onSnappedDateTime = { snappedDateTime ->
             onSnappedDateTime(snappedDateTime.snappedLocalDateTime)
             snappedDateTime.snappedIndex
