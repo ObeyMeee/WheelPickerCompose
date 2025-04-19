@@ -7,6 +7,7 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -36,23 +37,15 @@ class MainActivity : ComponentActivity() {
                         horizontalAlignment = Alignment.CenterHorizontally,
                         verticalArrangement = Arrangement.Center
                     ) {
-                        WheelTimePicker { snappedTime ->
+                        WheelTimePicker(
+                            minutesStep = 15,
+                            rowCount = 5,
+                            modifier = Modifier.height(300.dp),
+                        ) { snappedTime ->
                             println(snappedTime)
                         }
-                        WheelDatePicker { snappedDate ->
-                            println(snappedDate)
-                        }
-                        WheelDateTimePicker { snappedDateTime ->
-                            println(snappedDateTime)
-                        }
                         WheelDateTimePicker(
-                            startDateTime = LocalDateTime.of(
-                                2025, 10, 20, 5, 30
-                            ),
-                            minDateTime = LocalDateTime.now(),
-                            maxDateTime = LocalDateTime.of(
-                                2025, 10, 20, 5, 30
-                            ),
+                            modifier = Modifier.height(300.dp),
                             timeFormat = TimeFormat.AM_PM,
                             size = DpSize(200.dp, 100.dp),
                             rowCount = 5,
@@ -65,7 +58,7 @@ class MainActivity : ComponentActivity() {
                                 color = Color(0xFFf1faee).copy(alpha = 0.2f),
                                 border = BorderStroke(2.dp, Color(0xFFf1faee))
                             )
-                        ){ snappedDateTime ->
+                        ) { snappedDateTime ->
                             println(snappedDateTime)
                         }
                     }

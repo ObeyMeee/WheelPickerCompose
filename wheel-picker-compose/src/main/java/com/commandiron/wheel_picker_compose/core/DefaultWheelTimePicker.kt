@@ -109,7 +109,7 @@ internal fun DefaultWheelTimePicker(
                 onScrollFinished = { snappedIndex ->
 
                     val newHour = if (timeFormat == TimeFormat.HOUR_24) {
-                        hours.find { it.index == snappedIndex }?.value
+                        hours[snappedIndex % hours.size].value
                     } else {
                         amPmHourToHour24(
                             amPmHours.find { it.index == snappedIndex }?.value ?: 0,
