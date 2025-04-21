@@ -1,5 +1,8 @@
 package com.commandiron.wheel_picker_compose.core
 
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.spring
+import androidx.compose.animation.rememberSplineBasedDecay
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -39,7 +42,7 @@ internal fun WheelPicker(
     val isScrollInProgress = lazyListState.isScrollInProgress
 
     LaunchedEffect(isScrollInProgress, count) {
-        if(!isScrollInProgress) {
+        if (!isScrollInProgress) {
             onScrollFinished(calculateSnappedItemIndex(snapperLayoutInfo) ?: startIndex)?.let {
                 lazyListState.scrollToItem(it)
             }
@@ -50,7 +53,7 @@ internal fun WheelPicker(
         modifier = modifier,
         contentAlignment = Alignment.Center
     ) {
-        if(selectorProperties.enabled().value){
+        if (selectorProperties.enabled().value) {
             Surface(
                 modifier = Modifier
                     .size(size.width, size.height / rowCount),
@@ -59,15 +62,24 @@ internal fun WheelPicker(
                 border = selectorProperties.border().value
             ) {}
         }
+        val layoutInfo = rememberLazyListSnapperLayoutInfo(lazyListState)
+
+        val flingBehavior = rememberSnapperFlingBehavior(
+            layoutInfo = layoutInfo,
+            decayAnimationSpec = rememberSplineBasedDecay(),
+            springAnimationSpec = spring(
+                stiffness = Spring.StiffnessHigh,
+                dampingRatio = Spring.DampingRatioNoBouncy
+            )
+        )
+
         LazyColumn(
             modifier = Modifier
                 .height(size.height)
                 .width(size.width),
             state = lazyListState,
             contentPadding = PaddingValues(vertical = size.height / rowCount * ((rowCount - 1 )/ 2)),
-            flingBehavior = rememberSnapperFlingBehavior(
-                lazyListState = lazyListState
-            )
+            flingBehavior = flingBehavior
         ){
             items(count){ index ->
                 val rotationX = calculateAnimatedRotationX(
@@ -103,9 +115,9 @@ internal fun WheelPicker(
 private fun calculateSnappedItemIndex(snapperLayoutInfo: SnapperLayoutInfo): Int? {
     var currentItemIndex = snapperLayoutInfo.currentItem?.index
 
-    if(snapperLayoutInfo.currentItem?.offset != 0) {
-        if(currentItemIndex != null) {
-            currentItemIndex ++
+    if (snapperLayoutInfo.currentItem?.offset != 0) {
+        if (currentItemIndex != null) {
+            currentItemIndex++
         }
     }
     return currentItemIndex
@@ -124,7 +136,7 @@ private fun calculateAnimatedAlpha(
     val viewPortHeight = layoutInfo.viewportSize.height.toFloat()
     val singleViewPortHeight = viewPortHeight / rowCount
 
-    return if(distanceToIndexSnap in 0..singleViewPortHeight.toInt()) {
+    return if (distanceToIndexSnap in 0..singleViewPortHeight.toInt()) {
         1.2f - (distanceToIndexSnap / singleViewPortHeight)
     } else {
         0.2f
@@ -152,7 +164,7 @@ private fun calculateAnimatedRotationX(
     }
 }
 
-object WheelPickerDefaults{
+object WheelPickerDefaults {
     @Composable
     fun selectorProperties(
         enabled: Boolean = true,
@@ -170,10 +182,13 @@ object WheelPickerDefaults{
 interface SelectorProperties {
     @Composable
     fun enabled(): State<Boolean>
+
     @Composable
     fun shape(): State<Shape>
+
     @Composable
     fun color(): State<Color>
+
     @Composable
     fun border(): State<BorderStroke?>
 }
